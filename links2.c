@@ -55,23 +55,12 @@ void  fb(float a, float b, float c, float d, float T1, float T2, float *T3, floa
 		
 		*T3 = t3*180/pi+T1;
 		*T4 = t4*180/pi+T1;
-		//*T31 = t31*180/pi+T1;
-		//*T32 = t32*180/pi+T1;
-		//*T41 = t41*180/pi+T1;
-		//*T42 = t42*180/pi+T1;
 }
-void cs(float a, float b, float c, float T1, float T2, float *T3, float *d, bool crossed){
+void cs(float a, float b, float c, float T1, float T2, float *T3, float *d){
 		float t2 = (T2-T1)*pi/180;
-		if (crossed == false){
-			float t3 = asin((a*sin(t2)-c)/b);
-			*d = a*cos(t2) - b*cos(t3);
-			*T3 = t3*180/pi+T1;
-		}
-		if (crossed == true){
-			float t3 = pi - asin((a*sin(t2)-c)/b);
-			*d = a*cos(t2) - b*cos(t3);
-			*T3 = t3*180/pi+T1;
-		}
+		float t3 = asin((a*sin(t2)-c)/b);
+		*d = a*cos(t2) - b*cos(t3);
+		*T3 = t3*180/pi+T1;
 }
 void ics(float a, float c, float d, float T2, float G, float *T3, float *T4, float *b, bool crossed){
 		float t2 = T2*pi/180;
@@ -161,87 +150,39 @@ void tog(float a, float b, float c, float d, float *Ttog1, float *Ttog2){
 			printf("The linkage is grashof\n");
 	}
 }
-void fbv(float a, float b, float c, float T2, float T3, float T4, float w2, float *w3, float *w4, bool crossed){
+void fbv(float a, float b, float c, float T2, float T3, float T4, float w2, float *w3, float *w4){
 	T2 = T2*pi/180;
-	if (crossed == false){
-		T3 = T3*pi/180;
-		T4 = T4*pi/180;
-		*w3 = (a*w2/b)*sin(T4-T2)/sin(T3-T4);
-		*w4 = (a*w2/c)*sin(T2-T3)/sin(T4-T3);
-	}
-	if (crossed == true){
-		T3 = T3*pi/180;
-		T4 = T4*pi/180;
-		*w3 = (a*w2/b)*sin(T4-T2)/sin(T3-T4);
-		*w4 = (a*w2/c)*sin(T2-T3)/sin(T4-T3);
-	}
+	T3 = T3*pi/180;
+	T4 = T4*pi/180;
+	*w3 = (a*w2/b)*sin(T4-T2)/sin(T3-T4);
+	*w4 = (a*w2/c)*sin(T2-T3)/sin(T4-T3);
 }
-void csv(float a, float b, float c, float T1, float T2, float T3, float w2, float *w3, float *ddt, bool crossed){
+void csv(float a, float b, float c, float T1, float T2, float T3, float w2, float *w3, float *ddt){
 	T1 = T1*pi/180;
 	T2 = T2*pi/180;
-    if(crossed ==false){
-		T3 = T3*pi/180;
-		*w3 = (a/b)*(cos(T2-T1)/cos(T3-T1))*w2;
-		*ddt = -a*w2*sin(T2-T1)+b**w3*sin(T3-T1);
-
-	}
-	if(crossed == true){
-		T3 = T3*pi/180;
-		*w3 = (a/b)*(cos(T2-T1)/cos(T3-T1))*w2;
-		*ddt = -a*w2*sin(T2-T1)+b**w3*sin(T3-T1);
-	}
-	
-    
+	T3 = T3*pi/180;
+	*w3 = (a/b)*(cos(T2-T1)/cos(T3-T1))*w2;
+	*ddt = -a*w2*sin(T2-T1)+b**w3*sin(T3-T1);
 }
-void csa(float a, float b, float c, float T1, float T2, float T3, float w2, float w3, float al2, float *al3, float *ddtt, bool crossed){
+void csa(float a, float b, float c, float T1, float T2, float T3, float w2, float w3, float al2, float *al3, float *ddtt){
 	T1 = T1*pi/180;
 	T2 = T2*pi/180;
-	if(crossed == false){
-		T3 = T3*pi/180;
-		*al3 = (a*al2*cos(T2-T1)-a*pow(w2,2)*sin(T2-T1)+b*pow(w3,2)*sin(T3-T1))/(b*cos(T3-T1));
-		*ddtt = -a*al2*sin(T2-T1)-a*pow(w2,2)*cos(T2-T1)+b**al3*sin(T3-T1)+b*pow(w3,2)*cos(T3-T1);
-	}
-	if(crossed == true){
-		T3 = T3*pi/180;
-		*al3 = (a*al2*cos(T2-T1)-a*pow(w2,2)*sin(T2-T1)+b*pow(w3,2)*sin(T3-T1))/(b*cos(T3-T1));
-		*ddtt = -a*al2*sin(T2-T1)-a*pow(w2,2)*cos(T2-T1)+b**al3*sin(T3-T1)+b*pow(w3,2)*cos(T3-T1);
-	}
-	   
-    
-    
-    
-    
-    
+	T3 = T3*pi/180;
+	*al3 = (a*al2*cos(T2-T1)-a*pow(w2,2)*sin(T2-T1)+b*pow(w3,2)*sin(T3-T1))/(b*cos(T3-T1));
+	*ddtt = -a*al2*sin(T2-T1)-a*pow(w2,2)*cos(T2-T1)+b**al3*sin(T3-T1)+b*pow(w3,2)*cos(T3-T1);
 }
 
 
-void fba(float a, float b, float c, float T2, float T3, float T4, float w2, float w3, float w4, float al2, float *al3, float *al4, bool crossed){
+void fba(float a, float b, float c, float T2, float T3, float T4, float w2, float w3, float w4, float al2, float *al3, float *al4){
 	T2 = T2*pi/180;
-	if(crossed == false){
-		T3 = T3*pi/180;
-		T4 = T4*pi/180;
-		float A1 = c*sin(T4);
-		float B1 = b*sin(T3);
-		float C1 = a*al2*sin(T2)+a*pow(w2,2)*cos(T2)+b*pow(w3,2)*cos(T3)-c*pow(w4,2)*cos(T4);
-		float D1 = c*cos(T4);
-		float E1 = b*cos(T3);
-		float F1 = a*al2*cos(T2)-a*pow(w2,2)*sin(T2)-b*pow(w3,2)*sin(T3)+c*pow(w4,2)*sin(T4);
-		*al3 = (C1*D1-A1*F1)/(A1*E1-B1*D1);
-		*al4 = (C1*E1-B1*F1)/(A1*E1-B1*D1);
-	}
-	if(crossed == true){
-		T3 = T3*pi/180;
-		T4 = T4*pi/180;
-		float A2 = c*sin(T4);
-		float B2 = b*sin(T3);
-		float C2 = a*al2*sin(T2)+a*pow(w2,2)*cos(T2)+b*pow(w3,2)*cos(T3)-c*pow(w4,2)*cos(T4);
-		float D2 = c*cos(T4);
-		float E2 = b*cos(T3);
-		float F2 = a*al2*cos(T2)-a*pow(w2,2)*sin(T2)-b*pow(w3,2)*sin(T3)+c*pow(w4,2)*sin(T4);
-		*al3 = (C2*D2-A2*F2)/(A2*E2-B2*D2);
-		*al4 = (C2*E2-B2*F2)/(A2*E2-B2*D2);
-	}
-	else{
-		fprintf(stderr,"crossed needs to be a boolean (either TRUE and FALSE, or 1 and 0)");
-	}
+	T3 = T3*pi/180;
+	T4 = T4*pi/180;
+	float A1 = c*sin(T4);
+	float B1 = b*sin(T3);
+	float C1 = a*al2*sin(T2)+a*pow(w2,2)*cos(T2)+b*pow(w3,2)*cos(T3)-c*pow(w4,2)*cos(T4);
+	float D1 = c*cos(T4);
+	float E1 = b*cos(T3);
+	float F1 = a*al2*cos(T2)-a*pow(w2,2)*sin(T2)-b*pow(w3,2)*sin(T3)+c*pow(w4,2)*sin(T4);
+	*al3 = (C1*D1-A1*F1)/(A1*E1-B1*D1);
+	*al4 = (C1*E1-B1*F1)/(A1*E1-B1*D1);
 }
